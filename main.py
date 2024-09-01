@@ -6,12 +6,12 @@ class Conta:
 
     def depositar(self, valor):
         self.saldo += valor
-        self.transacoes.append(f"Depósito: R${valor}")
+        self.transacoes.append({'tipo': 'Depósito', 'valor': valor})
 
     def sacar(self, valor):
         if valor <= self.saldo:
             self.saldo -= valor
-            # Esquece de registrar a transação do saque
+            self.transacoes.append({'tipo': 'Saque', 'valor': -valor})
         else:
             print("Saldo insuficiente")
 
@@ -19,4 +19,4 @@ class Conta:
 conta = Conta("Usuário 1")
 conta.depositar(100)
 conta.sacar(50)
-print(conta.transacoes)  # Erro: Saque não registrado
+print(conta.transacoes)  # Transações corretas
