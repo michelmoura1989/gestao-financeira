@@ -1,3 +1,5 @@
+import tkinter as tk
+
 class Conta:
     def __init__(self, nome):
         self.nome = nome
@@ -15,8 +17,23 @@ class Conta:
         else:
             print("Saldo insuficiente")
 
-# Exemplo de uso
+def depositar():
+    valor = float(entry_valor.get())
+    conta.depositar(valor, "2024-08-23")
+    label_saldo.config(text=f'Saldo: R${conta.saldo}')  # Erro: saldo não atualiza
+
 conta = Conta("Usuário 1")
-conta.depositar(100, "2024-08-23")
-conta.sacar(50, "2024-08-24")
-print(conta.transacoes)
+
+root = tk.Tk()
+root.title("Conta Bancária")
+
+label_saldo = tk.Label(root, text=f'Saldo: R${conta.saldo}')
+label_saldo.pack()
+
+entry_valor = tk.Entry(root)
+entry_valor.pack()
+
+btn_depositar = tk.Button(root, text="Depositar", command=depositar)
+btn_depositar.pack()
+
+root.mainloop()
