@@ -1,0 +1,1 @@
+Criar uma aplicação prática que permita aos usuários gerenciar suas finanças pessoais de maneira mais eficiente, oferecendo funcionalidades como registro de transações, monitoramento de saldo e geração de extratos
