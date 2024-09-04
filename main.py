@@ -20,7 +20,15 @@ class Conta:
 def depositar():
     valor = float(entry_valor.get())
     conta.depositar(valor, "2024-08-23")
-    label_saldo.config(text=f'Saldo: R${conta.saldo}')  # Erro: saldo não atualiza
+    atualizar_saldo()
+
+def sacar():
+    valor = float(entry_valor.get())
+    conta.sacar(valor, "2024-08-24")
+    atualizar_saldo()
+
+def atualizar_saldo():
+    label_saldo.config(text=f'Saldo: R${conta.saldo}')
 
 conta = Conta("Usuário 1")
 
@@ -35,5 +43,8 @@ entry_valor.pack()
 
 btn_depositar = tk.Button(root, text="Depositar", command=depositar)
 btn_depositar.pack()
+
+btn_sacar = tk.Button(root, text="Sacar", command=sacar)
+btn_sacar.pack()
 
 root.mainloop()
