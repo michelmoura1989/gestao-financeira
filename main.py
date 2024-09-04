@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 
 class Conta:
     def __init__(self, nome):
@@ -6,45 +7,60 @@ class Conta:
         self.saldo = 0
         self.transacoes = []
 
-    def depositar(self, valor, data):
+    def depositar(self, valor, descricao, data):
         self.saldo += valor
-        self.transacoes.append({'tipo': 'Depósito', 'valor': valor, 'data': data})
+        self.transacoes.append({'descricao': descricao, 'valor': valor, 'data': data})
+        messagebox.showinfo("Depósito realizado", f'Depósito de R${valor} realizado em {data}: {descricao}')
 
-    def sacar(self, valor, data):
+    def sacar(self, valor, descricao, data):
         if valor <= self.saldo:
             self.saldo -= valor
-            self.transacoes.append({'tipo': 'Saque', 'valor': -valor, 'data': data})
+            self.transacoes.append({'descricao': descricao, 'valor': -valor, 'data': data})
+            messagebox.showinfo("Saque realizado", f'Saque de R${valor} realizado em {data}: {descricao}')
         else:
-            print("Saldo insuficiente")
+            messagebox.showerror("Saldo insuficiente", "Saldo insuficiente para realizar o saque.")
 
-def depositar():
-    valor = float(entry_valor.get())
-    conta.depositar(valor, "2024-08-23")
-    atualizar_saldo()
+    def saldo_atual(self):
+        return self.saldo
 
-def sacar():
-    valor = float(entry_valor.get())
-    conta.sacar(valor, "2024-08-24")
-    atualizar_saldo()
+    def extrato(self):
+        extrato = f'Extrato da conta {self.nome}:\n'
+        for transacao in self.transacoes:
+            extrato += f'{transacao["data"]} - {transacao["descricao"]}: R${transacao["valor"]}\n'
+        return extrato
 
-def atualizar_saldo():
-    label_saldo.config(text=f'Saldo: R${conta.saldo}')
+class AplicacaoFinanceira(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Sistema de Gestão Financeira")
+        self.geometry("400x300")
 
-conta = Conta("Usuário 1")
+        self.conta = Conta("Empresário XYZ")
 
-root = tk.Tk()
-root.title("Conta Bancária")
+        self.label_nome = tk.Label(self, text="Nome da Conta:")
+        self.label_nome.pack()
 
-label_saldo = tk.Label(root, text=f'Saldo: R${conta.saldo}')
-label_saldo.pack()
+        self.entry_nome = tk.Entry(self)
+        self.entry_nome.insert(0, self.conta.nome)
+        self.entry_nome.pack()
 
-entry_valor = tk.Entry(root)
-entry_valor.pack()
+        self.label_saldo = tk.Label(self, text="Saldo Atual:")
+        self.label_saldo.pack()
 
-btn_depositar = tk.Button(root, text="Depositar", command=depositar)
-btn_depositar.pack()
+        self.label_valor_saldo = tk.Label(self, text=f'R${self.conta.saldo_atual()}')
+        self.label_valor_saldo.pack()
 
-btn_sacar = tk.Button(root, text="Sacar", command=sacar)
-btn_sacar.pack()
+        self.label_operacao = tk.Label(self, text="Operação (Depósito/Saque):")
+        self.label_operacao.pack()
 
-root.mainloop()
+        self.entry_operacao = tk.Entry(self)
+        self.entry_operacao.pack()
+
+        self.label_valor = tk.Label(self, text="Valor:")
+        self.label_valor.pack()
+
+        self.entry_valor = tk.Entry(self)
+        self.entry_valor.pack()
+
+        self.label_descricao = tk.Label(self, text="Descrição:")
+        self
